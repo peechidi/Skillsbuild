@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillBridge</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo">SkillBridge</div>
+    <div class="nav">
+      <a href="#" onclick="showSection('home')">Home</a>
+      <a href="#" onclick="showSection('courses')">Courses</a>
+      <a href="#" onclick="showSection('saved')">Saved</a>
+      <a href="#" onclick="showSection('ai')">AI Tutor</a>
+      <a href="#" onclick="showSection('auth')">Login</a>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>Learn Anywhere, Anytime</h1>
+      <p>Offline-first digital learning for low connectivity environments.</p>
+    </div>
+
+    <!-- HOME -->
+    <div id="home" class="section active">
+      <h2>Featured Courses</h2>
+      <div class="grid">
+        <div class="card" onclick="openCourse(this.innerText)">3D Design</div>
+        <div class="card" onclick="openCourse(this.innerText)">Engineering Basics</div>
+        <div class="card" onclick="openCourse(this.innerText)">Digital Skills</div>
+        <div class="card" onclick="openCourse(this.innerText)">Software Development</div>
+        <div class="card" onclick="openCourse(this.innerText)">Cybersecurity</div>
+        <div class="card" onclick="openCourse(this.innerText)">UI/UX Design</div>
+        <div class="card" onclick="openCourse(this.innerText)">Data Analysis</div>
+        <div class="card" onclick="openCourse(this.innerText)">Game Development</div>
+        <div class="card" onclick="openCourse(this.innerText)">Mathematics</div>
+        <div class="card" onclick="openCourse(this.innerText)">Spanish</div>
+        <div class="card" onclick="openCourse(this.innerText)">English</div>
+        <div class="card" onclick="openCourse(this.innerText)">Igbo</div>
+        <div class="card" onclick="openCourse(this.innerText)">Hausa</div>
+        <div class="card" onclick="openCourse(this.innerText)">Yoruba</div>
+        <div class="card" onclick="openCourse(this.innerText)">Pidgin</div>
+      </div>
+      
+    </div>
+
+    <!-- COURSE LESSONS -->
+    <div id="courses" class="section">
+      <button onclick="showSection('home')">← Back</button>
+      <h2>3D Design Lessons</h2>
+
+      <div class="card" onclick="openLesson()">What is 3D Modeling?</div>
+      <div class="card">Basic Shapes</div>
+      <div class="card">Lighting & Rendering</div>
+    </div>
+
+    <!-- LESSON -->
+    <div id="lesson" class="section">
+      <button onclick="showSection('courses')">← Back</button>
+      <h2>What is 3D Modeling?</h2>
+      <p>3D modeling is the process of creating digital objects using software like Blender.</p>
+      <button class="btn" onclick="saveLesson()">Save Offline</button>
+    </div>
+
+    <!-- SAVED -->
+    <div id="saved" class="section">
+      <h2>Saved Lessons</h2>
+      <div class="card" id="savedLessons"></div>
+    </div>
+
+    <!-- AI -->
+    <div id="ai" class="section">
+      <h2>AI Tutor</h2>
+      <div class="card">
+        <div class="chat-box" id="chat"></div>
+        <input id="userInput" placeholder="Hi, I'm your tutor, ask me anything..." type="text">
+        <button class="btn" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <!-- AUTH -->
+    <div id="auth" class="section">
+      <div class="auth-container">
+        <div class="auth-box">
+          <h2>Welcome Back</h2>
+          <input placeholder="Email">
+          <input type="password" placeholder="Password">
+          <button class="btn">Login</button>
+          <p class="switch">Don't have an account? <span onclick="toggleAuth()">Sign Up</span></p>
+        </div>
+
+        <div class="auth-box hidden" id="signupBox">
+          <h2>Create Account</h2>
+          <input placeholder="Full Name">
+          <input placeholder="Email">
+          <input type="password" placeholder="Password">
+          <button class="btn">Sign Up</button>
+          <p class="switch">Already have an account? <span onclick="toggleAuth()">Login</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">© 2026 SkillBridge</div>
+
+  </div>
+</div>
+
+<script>
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// function openCourse(){ showSection('courses'); }
+// function openLesson(){ showSection('lesson'); }
+
+// COURSE DATA
+const courseData = {
+  "3D Design": ["What is 3D Modeling?","Basic Shapes","Lighting & Rendering"],
+  "Engineering Basics": ["Intro to Engineering","Forces & Motion","Simple Machines"],
+  "Digital Skills": ["Internet Basics","Online Safety","Using Apps"],
+  "Software Development": ["What is Programming?","HTML Basics","JavaScript Intro"],
+  "Cybersecurity": ["What is Cybersecurity?","Passwords & Encryption","Phishing Attacks"],
+  "UI/UX Design": ["Design Principles","Wireframing","User Research"],
+  "Data Analysis": ["What is Data?","Excel Basics","Data Visualization"]
+};
+
+function openCourse(courseName){
+  const lessons = courseData[courseName] || ["Coming soon..."];
+  const container = document.getElementById('courses');
+
+  container.innerHTML = `
+    <button onclick="showSection('home')">← Back</button>
+    <h2>${courseName} Lessons</h2>
+    ${lessons.map(l => `<div class=\"card\" onclick=\"openLesson('${l}')\">${l}</div>`).join('')}
+  `;
+  showSection('courses');
+}
+function openLesson(lessonName){
+  const lessonSection = document.getElementById('lesson');
+
+  lessonSection.innerHTML = `
+    <button onclick="showSection('courses')">← Back</button>
+    <h2>${lessonName}</h2>
+    <p>This lesson covers ${lessonName}. Content will be expanded with videos, text, and offline materials.</p>
+    <button class=\"btn\" onclick=\"saveLesson('${lessonName}')\">Save Offline</button>
+  `;
+
+  showSection('lesson');
+}
+
+function saveLesson(lessonName){
+  let saved = JSON.parse(localStorage.getItem('lessons')) || [];
+  saved.push(lessonName);
+  localStorage.setItem('lessons', JSON.stringify(saved));
+  loadLessons();
+}
+
+// function saveLesson(){
+//   localStorage.setItem('lesson','3D Modeling Lesson');
+//   loadLessons();
+// }
+
+function loadLessons(){
+  const container=document.getElementById('savedLessons');
+  container.innerHTML=localStorage.getItem('lesson') || 'No saved lessons yet';
+}
+
+function sendMessage(){
+  const input=document.getElementById('userInput');
+  const chat=document.getElementById('chat');
+
+  const user=document.createElement('div');
+  user.className='message user';
+  user.textContent=input.value;
+
+  const bot=document.createElement('div');
+  bot.className='message bot';
+  bot.textContent='I am your AI tutor.';
+
+  chat.appendChild(user);
+  chat.appendChild(bot);
+  input.value='';
+}
+
+function toggleAuth(){
+  document.querySelectorAll('.auth-box').forEach(b=>b.classList.toggle('hidden'));
+}
+
+loadLessons();
+</script>
+
+</body>
+</html>
+
+
